@@ -4,27 +4,33 @@ const speed = 1
 
 func move():
 	var velocity = Vector2()
+	var animation_name = ""
+
 	if Input.is_action_pressed("ui_right"):
 		velocity.x += 1
-		$AnimationPlayer.set_current_animation("walk_right")
+		animation_name = "walk_right"
 	if Input.is_action_pressed("ui_left"):
 		velocity.x -= 1
-		$AnimationPlayer.set_current_animation("walk_left")
+		animation_name = "walk_left"
 	if Input.is_action_pressed("ui_down"):
 		velocity.y += 1
-		$AnimationPlayer.set_current_animation("walk_down")
+		animation_name = "walk_down"
 	if Input.is_action_pressed("ui_up"):
 		velocity.y -= 1
-		$AnimationPlayer.set_current_animation("walk_up")
+		animation_name = "walk_up"
+
 	if velocity.length() > 0:
 		velocity = velocity.normalized() * speed
+		$AnimationPlayer.play(animation_name)
 	else:
-		$AnimationPlayer.set_current_animation("")
+		$AnimationPlayer.stop()
 
 	self.position += velocity
 
+
 func _ready():
 	pass
+
 
 func _process(delta):
 	move()
