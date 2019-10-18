@@ -1,27 +1,35 @@
 extends Area2D
 
-const speed = 1
-
 func _ready():
-	pass # Replace with function body.
+	pass
 
-func _process(delta):
-	var velocity = Vector2()  # The player's movement vector.
-	if Input.is_action_pressed("ui_right"):
-		velocity.x += 1
-		$AnimationPlayer.set_current_animation("walk_right")
-	if Input.is_action_pressed("ui_left"):
-		velocity.x -= 1
-		$AnimationPlayer.set_current_animation("walk_left")
-	if Input.is_action_pressed("ui_down"):
-		velocity.y += 1
-		$AnimationPlayer.set_current_animation("walk_down")
-	if Input.is_action_pressed("ui_up"):
-		velocity.y -= 1
-		$AnimationPlayer.set_current_animation("walk_up")
-	if velocity.length() > 0:
-		velocity = velocity.normalized() * speed
+const speed = 7
+
+func _unhandled_input(event):
+	if not event is InputEventKey:
+		return
+
+	var velocity = Vector2()
+
+	if event.pressed:
+		if event.scancode == KEY_RIGHT:
+			velocity.x += 1
+			$AnimationPlayer.set_current_animation("walk_right")
+		if event.scancode == KEY_LEFT:
+			velocity.x -= 1
+			$AnimationPlayer.set_current_animation("walk_left")
+		if event.scancode == KEY_DOWN:
+			velocity.y += 1
+			$AnimationPlayer.set_current_animation("walk_down")
+		if event.scancode == KEY_UP:
+			velocity.y -= 1
+			$AnimationPlayer.set_current_animation("walk_up")
 	else:
 		$AnimationPlayer.set_current_animation("")
 
-	self.position += velocity
+	if velocity.length() > 0:
+		self.position += velocity.normalized() * speed
+
+
+func _process(delta):
+	pass
